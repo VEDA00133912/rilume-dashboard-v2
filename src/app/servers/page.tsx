@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import { useState, useEffect, useCallback } from "react"
-import Sidebar from "@/components/Sidebar"
-import { useSession } from "next-auth/react"
-import { redirect } from "next/navigation"
-import Image from "next/image"
+import { useState, useEffect, useCallback } from 'react'
+import Sidebar from '@/components/Sidebar'
+import { useSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
+import Image from 'next/image'
 
 type Guild = {
   id: string
@@ -18,26 +18,26 @@ export default function ServersPage() {
   const { data: session, status } = useSession()
   const [guilds, setGuilds] = useState<Guild[]>([])
   const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState('')
   const [leaving, setLeaving] = useState<string | null>(null)
   const [confirmId, setConfirmId] = useState<string | null>(null)
 
   const fetchGuilds = useCallback(async () => {
     setLoading(true)
-    const res = await fetch("/api/bot/guilds")
+    const res = await fetch('/api/bot/guilds')
     const data = await res.json()
     setGuilds(data)
     setLoading(false)
   }, [])
 
   useEffect(() => {
-    if (status === "unauthenticated") redirect("/login")
-    if (status === "authenticated") fetchGuilds()
+    if (status === 'unauthenticated') redirect('/login')
+    if (status === 'authenticated') fetchGuilds()
   }, [status, fetchGuilds])
 
   async function leaveGuild(id: string) {
     setLeaving(id)
-    await fetch(`/api/bot/guilds/${id}/leave`, { method: "DELETE" })
+    await fetch(`/api/bot/guilds/${id}/leave`, { method: 'DELETE' })
     setGuilds((prev) => prev.filter((g) => g.id !== id))
     setLeaving(null)
     setConfirmId(null)
@@ -52,7 +52,7 @@ export default function ServersPage() {
     return null
   }
 
-  if (status === "loading") return null
+  if (status === 'loading') return null
 
   return (
     <div className="flex h-screen bg-[#0a0b0d] text-white overflow-hidden">
@@ -94,7 +94,7 @@ export default function ServersPage() {
             filtered.map((guild) => {
               const iconUrl = getIconUrl(guild)
               const initials = guild.name.slice(0, 1).toUpperCase()
-              const colors = ["#5865f2","#23d26e","#fab41e","#f0545a","#7a84f5","#23b2d2"]
+              const colors = ['#5865f2','#23d26e','#fab41e','#f0545a','#7a84f5','#23b2d2']
               const color = colors[parseInt(guild.id.slice(-1), 16) % colors.length]
 
               return (
@@ -154,7 +154,7 @@ export default function ServersPage() {
                         onClick={() => leaveGuild(guild.id)}
                         disabled={leaving === guild.id}
                         className="bg-[#f0545a] text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-[#d94046] transition-colors disabled:opacity-50">
-                        {leaving === guild.id ? "..." : "Yes, leave"}
+                        {leaving === guild.id ? '...' : 'Yes, leave'}
                       </button>
                       <button
                         onClick={() => setConfirmId(null)}

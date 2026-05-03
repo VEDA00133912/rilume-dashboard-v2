@@ -1,10 +1,10 @@
-import { auth } from "@/lib/auth"
-import { redirect } from "next/navigation"
-import Sidebar from "@/components/Sidebar"
+import { auth } from '@/lib/auth'
+import { redirect } from 'next/navigation'
+import Sidebar from '@/components/Sidebar'
 
 export default async function DashboardPage() {
   const session = await auth()
-  if (!session) redirect("/login")
+  if (!session) redirect('/login')
 
   return (
     <div className="flex h-screen bg-[#0a0b0d] text-white overflow-hidden">

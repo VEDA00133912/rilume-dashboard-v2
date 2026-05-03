@@ -1,31 +1,31 @@
-"use client"
+'use client'
 
-import { useSession } from "next-auth/react"
-import { redirect } from "next/navigation"
-import { usePathname } from "next/navigation"
-import Link from "next/link"
-import Sidebar from "@/components/Sidebar"
+import { useSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
+import { usePathname } from 'next/navigation'
+import Link from 'next/link'
+import Sidebar from '@/components/Sidebar'
 
 const tabs = [
-  { label: "Blacklist",   href: "/database/blacklist" },
-  { label: "Expand",      href: "/database/expand" },
-  { label: "Impersonate", href: "/database/impersonate" },
-  { label: "Logs",        href: "/database/logs" },
+  { label: 'Blacklist',   href: '/database/blacklist' },
+  { label: 'Expand',      href: '/database/expand' },
+  { label: 'Impersonate', href: '/database/impersonate' },
+  { label: 'Logs',        href: '/database/logs' },
 ]
 
 const pageNames: Record<string, string> = {
-  "/database/blacklist":   "blacklist",
-  "/database/expand":      "expand",
-  "/database/impersonate": "impersonate",
-  "/database/logs":        "logs",
+  '/database/blacklist':   'blacklist',
+  '/database/expand':      'expand',
+  '/database/impersonate': 'impersonate',
+  '/database/logs':        'logs',
 }
 
 export default function DatabaseLayout({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession()
   const pathname = usePathname()
 
-  if (status === "loading") return null
-  if (status === "unauthenticated") redirect("/login")
+  if (status === 'loading') return null
+  if (status === 'unauthenticated') redirect('/login')
 
   return (
     <div className="flex h-screen bg-[#0a0b0d] text-white overflow-hidden">
@@ -35,7 +35,7 @@ export default function DatabaseLayout({ children }: { children: React.ReactNode
           <div>
             <h1 className="text-lg font-extrabold">Database</h1>
             <p className="text-xs font-mono text-white/30 mt-0.5">
-              rilume / {pageNames[pathname] ?? "database"}
+              rilume / {pageNames[pathname] ?? 'database'}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -51,8 +51,8 @@ export default function DatabaseLayout({ children }: { children: React.ReactNode
               <Link key={t.href} href={t.href}
                 className={`px-4 py-2 text-xs font-mono rounded-t-lg transition-all ${
                   active
-                    ? "bg-[#161820] text-white border-t border-x border-white/8"
-                    : "text-white/35 hover:text-white/60"
+                    ? 'bg-[#161820] text-white border-t border-x border-white/8'
+                    : 'text-white/35 hover:text-white/60'
                 }`}>
                 {t.label}
               </Link>

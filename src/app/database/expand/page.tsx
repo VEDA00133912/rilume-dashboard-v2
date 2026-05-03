@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { useState, useEffect } from "react"
-import { Loading, Empty } from "@/components/ui"
+import { useState, useEffect } from 'react'
+import { Loading, Empty } from '@/components/ui'
 
 type Entry = { guildId: string; expand: boolean }
 
@@ -10,15 +10,15 @@ export default function ExpandPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("/api/db/expand")
+    fetch('/api/db/expand')
       .then((r) => r.json())
       .then((d) => { setList(d); setLoading(false) })
   }, [])
 
   async function toggle(guildId: string, current: boolean) {
     await fetch(`/api/db/expand/${guildId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ expand: !current }),
     })
     setList((p) => p.map((e) => e.guildId === guildId ? { ...e, expand: !current } : e))
@@ -38,14 +38,14 @@ export default function ExpandPage() {
           </div>
           <button onClick={() => toggle(e.guildId, e.expand)}
             className={`relative w-10 h-5 rounded-full transition-colors flex-shrink-0 ${
-              e.expand ? "bg-[#5865f2]" : "bg-white/15"
+              e.expand ? 'bg-[#5865f2]' : 'bg-white/15'
             }`}>
             <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${
-              e.expand ? "left-5" : "left-0.5"
+              e.expand ? 'left-5' : 'left-0.5'
             }`} />
           </button>
-          <span className={`text-xs font-mono w-8 flex-shrink-0 ${e.expand ? "text-[#5865f2]" : "text-white/30"}`}>
-            {e.expand ? "ON" : "OFF"}
+          <span className={`text-xs font-mono w-8 flex-shrink-0 ${e.expand ? 'text-[#5865f2]' : 'text-white/30'}`}>
+            {e.expand ? 'ON' : 'OFF'}
           </span>
         </div>
       ))}

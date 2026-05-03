@@ -1,16 +1,16 @@
-import NextAuth, { type DefaultSession } from "next-auth"
-import Discord from "next-auth/providers/discord"
+import NextAuth, { type DefaultSession } from 'next-auth'
+import Discord from 'next-auth/providers/discord'
 
-const allowedIds = (process.env.ALLOWED_DISCORD_IDS ?? "")
-  .split(",")
+const allowedIds = (process.env.ALLOWED_DISCORD_IDS ?? '')
+  .split(',')
   .map((s) => s.trim())
 
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session {
     accessToken?: string
     user: {
       id: string
-    } & DefaultSession["user"]
+    } & DefaultSession['user']
   }
 }
 
@@ -20,9 +20,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientId: process.env.DISCORD_CLIENT_ID!,
       clientSecret: process.env.DISCORD_CLIENT_SECRET!,
       authorization: {
-        params: { scope: "identify email guilds" },
+        params: { scope: 'identify email guilds' },
       },
-      checks: ["state"],
+      checks: ['state'],
     }),
   ],
   callbacks: {
@@ -33,7 +33,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return token
     },
     session({ session, token }) {
-      session.user.id = token.sub ?? ""
+      session.user.id = token.sub ?? ''
       session.accessToken = token.accessToken as string | undefined
       return session
     },
@@ -46,7 +46,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
   },
   pages: {
-    signIn: "/login",
-    error: "/login",
+    signIn: '/login',
+    error: '/login',
   },
 })

@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import Link from "next/link"
-import Image from "next/image"
-import { signOut } from "next-auth/react"
-import { usePathname } from "next/navigation"
+import Link from 'next/link'
+import Image from 'next/image'
+import { signOut } from 'next-auth/react'
+import { usePathname } from 'next/navigation'
 
 type User = {
   name?: string | null
@@ -12,28 +12,28 @@ type User = {
 
 const navItems = [
   {
-    section: "overview",
+    section: 'overview',
     items: [
-      { label: "Dashboard", href: "/", icon: GridIcon },
-      { label: "Commands", href: "/commands", icon: CommandIcon },
+      { label: 'Dashboard', href: '/', icon: GridIcon },
+      { label: 'Commands', href: '/commands', icon: CommandIcon },
     ],
   },
   {
-    section: "management",
+    section: 'management',
     items: [
-      { label: "Servers", href: "/servers", icon: ServerIcon },
-      { label: "Blacklist", href: "/database/blacklist", icon: DatabaseIcon },
-      { label: "Expand", href: "/database/expand", icon: DatabaseIcon },
-      { label: "Impersonate", href: "/database/impersonate", icon: DatabaseIcon },
-      { label: "Logs", href: "/database/logs", icon: DatabaseIcon },
-      { label: "Random Songs", href: "/database/randomsongs", icon: DatabaseIcon }
+      { label: 'Servers', href: '/servers', icon: ServerIcon },
+      { label: 'Blacklist', href: '/database/blacklist', icon: DatabaseIcon },
+      { label: 'Expand', href: '/database/expand', icon: DatabaseIcon },
+      { label: 'Impersonate', href: '/database/impersonate', icon: DatabaseIcon },
+      { label: 'Logs', href: '/database/logs', icon: DatabaseIcon },
+      { label: 'Random Songs', href: '/database/randomsongs', icon: DatabaseIcon }
     ],
   },
 ]
 
 export default function Sidebar({ user }: { user: User }) {
   const pathname = usePathname()
-  const initials = user.name?.slice(0, 2).toUpperCase() ?? "??"
+  const initials = user.name?.slice(0, 2).toUpperCase() ?? '??'
 
   return (
     <aside className="w-[220px] bg-[#0f1015] border-r border-white/7 flex flex-col py-5 flex-shrink-0">
@@ -67,7 +67,7 @@ export default function Sidebar({ user }: { user: User }) {
 
             {items.map(({ label, href, icon: Icon }) => {
               const active =
-                pathname === href || pathname.startsWith(href + "/")
+                pathname === href || pathname.startsWith(href + '/')
 
               return (
                 <Link
@@ -75,8 +75,8 @@ export default function Sidebar({ user }: { user: User }) {
                   href={href}
                   className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-[13px] mb-0.5 transition-all ${
                     active
-                      ? "bg-[#5865f2]/15 text-[#7a84f5]"
-                      : "text-white/40 hover:bg-white/4 hover:text-white/70"
+                      ? 'bg-[#5865f2]/15 text-[#7a84f5]'
+                      : 'text-white/40 hover:bg-white/4 hover:text-white/70'
                   }`}
                 >
                   <Icon className="w-4 h-4 flex-shrink-0" />
@@ -92,7 +92,7 @@ export default function Sidebar({ user }: { user: User }) {
       <div className="px-2.5 pt-3.5 border-t border-white/6">
         <div
           className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg bg-white/4 cursor-pointer hover:bg-white/6 transition-all"
-          onClick={() => signOut({ callbackUrl: "/login" })}
+          onClick={() => signOut({ callbackUrl: '/login' })}
         >
           {user.image ? (
             <Image

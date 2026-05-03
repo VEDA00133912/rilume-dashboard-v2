@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { useState, useEffect } from "react"
-import { Loading, Empty } from "@/components/ui"
+import { useState, useEffect } from 'react'
+import { Loading, Empty } from '@/components/ui'
 
 type Entry = {
   guildId: string
@@ -16,22 +16,22 @@ export default function ImpersonatePage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("/api/db/impersonate")
+    fetch('/api/db/impersonate')
       .then((r) => r.json())
       .then((d) => { setList(d); setLoading(false) })
   }, [])
 
   async function toggleEnabled(guildId: string, current: boolean) {
     await fetch(`/api/db/impersonate/${guildId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ enabled: !current }),
     })
     setList((p) => p.map((e) => e.guildId === guildId ? { ...e, enabled: !current } : e))
   }
 
   async function deleteEntry(guildId: string) {
-    await fetch(`/api/db/impersonate/${guildId}`, { method: "DELETE" })
+    await fetch(`/api/db/impersonate/${guildId}`, { method: 'DELETE' })
     setList((p) => p.filter((e) => e.guildId !== guildId))
   }
 
@@ -48,14 +48,14 @@ export default function ImpersonatePage() {
             <div className="flex items-center gap-3">
               <button onClick={() => toggleEnabled(e.guildId, e.enabled)}
                 className={`relative w-10 h-5 rounded-full transition-colors flex-shrink-0 ${
-                  e.enabled ? "bg-[#23d26e]" : "bg-white/15"
+                  e.enabled ? 'bg-[#23d26e]' : 'bg-white/15'
                 }`}>
                 <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${
-                  e.enabled ? "left-5" : "left-0.5"
+                  e.enabled ? 'left-5' : 'left-0.5'
                 }`} />
               </button>
-              <span className={`text-xs font-mono w-8 ${e.enabled ? "text-[#23d26e]" : "text-white/30"}`}>
-                {e.enabled ? "ON" : "OFF"}
+              <span className={`text-xs font-mono w-8 ${e.enabled ? 'text-[#23d26e]' : 'text-white/30'}`}>
+                {e.enabled ? 'ON' : 'OFF'}
               </span>
               <button onClick={() => deleteEntry(e.guildId)}
                 className="text-xs font-bold text-[#f0545a] bg-[#f0545a]/8 border border-[#f0545a]/25 px-3 py-1.5 rounded-lg hover:bg-[#f0545a]/18 transition-all">
@@ -65,12 +65,12 @@ export default function ImpersonatePage() {
           </div>
           <div className="grid grid-cols-2 gap-3 pt-2 border-t border-white/5">
             {[
-              ["Channel ID", e.channelId],
-              ["Webhook ID", e.webhookId],
+              ['Channel ID', e.channelId],
+              ['Webhook ID', e.webhookId],
             ].map(([label, val]) => (
               <div key={label}>
                 <p className="text-[10px] font-mono text-white/25">{label}</p>
-                <p className="text-xs font-mono text-white/55 truncate">{val ?? "—"}</p>
+                <p className="text-xs font-mono text-white/55 truncate">{val ?? '—'}</p>
               </div>
             ))}
           </div>

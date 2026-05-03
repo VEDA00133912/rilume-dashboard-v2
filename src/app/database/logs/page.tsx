@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { useState, useEffect } from "react"
-import { Loading, Empty } from "@/components/ui"
+import { useState, useEffect } from 'react'
+import { Loading, Empty } from '@/components/ui'
 
 type Entry = {
   guildId: string
@@ -13,10 +13,10 @@ type Entry = {
 export default function LogsPage() {
   const [logs, setLogs]       = useState<Entry[]>([])
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter]   = useState("")
+  const [filter, setFilter]   = useState('')
 
   useEffect(() => {
-    fetch("/api/db/impersonate-log")
+    fetch('/api/db/impersonate-log')
       .then((r) => r.json())
       .then((d) => { setLogs(d); setLoading(false) })
   }, [])
@@ -41,10 +41,10 @@ export default function LogsPage() {
       ) : filtered.map((e, i) => (
         <div key={i} className="grid grid-cols-4 gap-4 bg-[#161820] border border-white/7 rounded-xl px-4 py-3">
           {[
-            ["Guild",    e.guildId],
-            ["Executor", e.executorId],
-            ["Message",  e.messageId],
-            ["Time",     new Date(e.executedAt).toLocaleString("ja-JP")],
+            ['Guild',    e.guildId],
+            ['Executor', e.executorId],
+            ['Message',  e.messageId],
+            ['Time',     new Date(e.executedAt).toLocaleString('ja-JP')],
           ].map(([label, val]) => (
             <div key={label} className="min-w-0">
               <p className="text-[10px] font-mono text-white/25">{label}</p>

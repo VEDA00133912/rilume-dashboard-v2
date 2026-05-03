@@ -1,7 +1,7 @@
-import { MongoClient, ServerApiVersion } from "mongodb"
+import { MongoClient, ServerApiVersion } from 'mongodb'
 
 const uri = process.env.MONGODB_URI!
-if (!uri) throw new Error("MONGODB_URI is not defined")
+if (!uri) throw new Error('MONGODB_URI is not defined')
 
 const options = {
   serverApi: {
@@ -14,7 +14,7 @@ const options = {
 let client: MongoClient
 let clientPromise: Promise<MongoClient>
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === 'development') {
   const globalWithMongo = global as typeof globalThis & {
     _mongoClientPromise?: Promise<MongoClient>
   }
