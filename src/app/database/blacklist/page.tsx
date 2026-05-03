@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Loading, Empty } from "@/components/ui"
 
 type Entry = { userId: string; addedAt: string }
@@ -11,14 +11,16 @@ export default function BlacklistPage() {
   const [newId, setNewId]     = useState("")
   const [adding, setAdding]   = useState(false)
 
-  useEffect(() => { fetchList() }, [])
-
-  async function fetchList() {
+  const fetchList = useCallback(async () => {
     setLoading(true)
     const res = await fetch("/api/db/blacklist")
     setList(await res.json())
     setLoading(false)
-  }
+  }, [])
+
+  useEffect(() => {
+    fetchList()
+  }, [fetchList])
 
   async function addEntry() {
     if (!newId.trim()) return

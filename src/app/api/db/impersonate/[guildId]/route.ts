@@ -1,44 +1,38 @@
 import { auth } from "@/lib/auth"
-import { connectDB } from "@/lib/mongoose"
-import { Impersonate } from "@/lib/models"
-import { NextRequest, NextResponse } from "next/server"
+import clientPromise from "@/lib/mongodb"
+import type { Impersonate } from "@/types/db"
 
-export async function PATCH(
-  req: NextRequest,
-  context: { params: Promise<{ guildId: string }> }
-) {
-  const session = await auth()
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  }
+type Params = { params: { guildId: string } }
 
-  const { guildId } = await context.params
-  const body = await req.json()
-
-  await connectDB()
-
-  const doc = await Impersonate.findOneAndUpdate(
-    { guildId },
-    body,
-    { new: true }
-  )
-
-  return NextResponse.json(doc)
+async function getCol() {
+  const client = await clientPromise
+  return client.db().collection<Impersonate>("impersonates")
 }
 
-export async function DELETE(
-  _: NextRequest,
-  context: { params: Promise<{ guildId: string }> }
-) {
+export async function PATCH(req: Request, { params }: Params) {
   const session = await auth()
   if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    return Response.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const { guildId } = await context.params
+  const body = await req.json()
+  const col = await getCol()
+  const doc = await col.findOneAndUpdate(
+    { guildId: params.guildId },
+    { $set: body },
+    { returnDocument: "after" }
+  )
 
-  await connectDB()
-  await Impersonate.deleteOne({ guildId })
+  return Response.json(doc)
+}
 
-  return NextResponse.json({ success: true })
+export async function DELETE(_: Request, { params }: Params) {
+  const session = await auth()
+  if (!session) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  const col = await getCol()
+  await col.deleteOne({ guildId: params.guildId })
+  return Response.json({ success: true })
 }

@@ -1,9 +1,10 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Sidebar from "@/components/Sidebar"
 import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
+import Image from "next/image"
 
 type Guild = {
   id: string
@@ -21,18 +22,18 @@ export default function ServersPage() {
   const [leaving, setLeaving] = useState<string | null>(null)
   const [confirmId, setConfirmId] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (status === "unauthenticated") redirect("/login")
-    if (status === "authenticated") fetchGuilds()
-  }, [status])
-
-  async function fetchGuilds() {
+  const fetchGuilds = useCallback(async () => {
     setLoading(true)
     const res = await fetch("/api/bot/guilds")
     const data = await res.json()
     setGuilds(data)
     setLoading(false)
-  }
+  }, [])
+
+  useEffect(() => {
+    if (status === "unauthenticated") redirect("/login")
+    if (status === "authenticated") fetchGuilds()
+  }, [status, fetchGuilds])
 
   async function leaveGuild(id: string) {
     setLeaving(id)
@@ -101,7 +102,13 @@ export default function ServersPage() {
                   className="flex items-center gap-4 bg-[#161820] border border-white/7 hover:border-white/14 rounded-xl px-4 py-3 transition-colors">
                   {/* アイコン */}
                   {iconUrl ? (
-                    <img src={iconUrl} alt="" className="w-11 h-11 rounded-xl flex-shrink-0" />
+                    <Image
+                      src={iconUrl}
+                      alt=""
+                      width={44}
+                      height={44}
+                      className="rounded-xl flex-shrink-0"
+                    />
                   ) : (
                     <div className="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center text-lg font-black text-white"
                       style={{ background: color }}>

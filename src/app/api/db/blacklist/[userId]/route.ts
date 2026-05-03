@@ -1,21 +1,21 @@
 import { auth } from "@/lib/auth"
-import { connectDB } from "@/lib/mongoose"
-import { Blacklist } from "@/lib/models"
-import { NextRequest, NextResponse } from "next/server"
+import clientPromise from "@/lib/mongodb"
+import type { BlacklistUser } from "@/types/db"
 
-export async function DELETE(
-  _: NextRequest,
-  context: { params: Promise<{ userId: string }> }
-) {
+type Params = { params: { userId: string } }
+
+async function getCol() {
+  const client = await clientPromise
+  return client.db().collection<BlacklistUser>("blacklistusers")
+}
+
+export async function DELETE(_: Request, { params }: Params) {
   const session = await auth()
   if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    return Response.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const { userId } = await context.params
-
-  await connectDB()
-  await Blacklist.deleteOne({ userId })
-
-  return NextResponse.json({ success: true })
+  const col = await getCol()
+  await col.deleteOne({ userId: params.userId })
+  return Response.json({ success: true })
 }

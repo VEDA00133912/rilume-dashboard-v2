@@ -1,6 +1,8 @@
 {
     "files.encoding": "utf8",
     "cSpell.words": [
+        "blacklistusers",
+        "impersonatelogs",
         "PKCE",
         "randomsongs",
         "Rilume"
