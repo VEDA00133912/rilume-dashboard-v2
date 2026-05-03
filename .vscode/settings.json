@@ -1,0 +1,9 @@
+{
+    "files.encoding": "utf8",
+    "cSpell.words": [
+        "PKCE",
+        "randomsongs",
+        "Rilume"
+    ],
+    "css.lint.unknownAtRules": "ignore"
+}
